@@ -31,7 +31,7 @@ export default function DashboardPage() {
       location: "Pesisir Selatan",
       rating: 4.7,
       reviews: 189,
-      image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=500",
+      image: "/background/painan.png",
       badge: "Pesisir Selatan"
     },
     {
@@ -40,7 +40,7 @@ export default function DashboardPage() {
       location: "Bukittinggi",
       rating: 4.9,
       reviews: 312,
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500",
+      image: "/background/ngaraisianok.png",
       badge: "Bukittinggi"
     },
   ];
