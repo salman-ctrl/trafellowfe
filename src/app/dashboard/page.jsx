@@ -123,7 +123,7 @@ export default function DashboardPage() {
                   
                   {/* Badge */}
                   <div className="absolute top-3 left-3">
-                    <span className="bg-blue-6 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                    <span className="bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
                       {destination.badge}
                     </span>
                   </div>
