@@ -1,30 +1,13 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import Nav from "@/components/Nav";
+import Region from "@/components/Region";
+
 
 export default function DashboardPage() {
   const [activeMenu, setActiveMenu] = useState("beranda");
-  const router = useRouter();
 
-  // Data Kabupaten/Kota
-  const regions = [
-    { id: 1, name: "Padang", icon: "🏖️", img:"/background/dashboard/padang.png"},
-    { id: 2, name: "Bukittinggi", icon: "🏔️", img:"/background/dashboard/jamgadang.png"},
-    { id: 3, name: "Tanah Datar", icon: "🏛️",img:"/background/dashboard/tanahdatar.png" },
-    { id: 4, name: "Payakumbuh", icon: "🌾",img:"/background/dashboard/payakumbuh.png"},
-    { id: 5, name: "Solok", icon: "🏞️",img:"/background/dashboard/solok.png"},
-    { id: 6, name: "Pesisir Selatan", icon: "🌊", img:"/background/dashboard/painan.png"},
-  ];
-
-  const handleclick = (e) => {
-    e.preventDefault();
-
-    setTimeout(() => {
-      router.push("/login")
-
-    }, 1000);
-  };
-
+ 
   // Data Destinasi Trending
   const trendingDestinations = [
     {
@@ -83,44 +66,8 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navbar */}
-      <nav className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            {/* Logo */}
-            <div className="flex items-center">
-                <img src="/icon/trafellow.png" className="h-16 w-auto" alt="" />
-              <h1 className="text-2xl font-bold text-blue-600">Trafellow</h1>
-            </div>
-
-            {/* Menu Desktop */}
-            <div className="hidden md:flex space-x-8">
-              {["Beranda", "Jelajah", "Event", "Komunitas"].map((item) => (
-                <button
-                  key={item}
-                  onClick={() => setActiveMenu(item.toLowerCase())}
-                  className={`text-md font-medium transition-colors duration-200 ${
-                    activeMenu === item.toLowerCase()
-                      ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-gray-600 hover:text-blue-600"
-                  } pb-1`}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex items-center space-x-3">
-              <button onClick={handleclick} className="px-4 py-2 text-sm cursor-pointer font-medium text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
-                Masuk
-              </button>
-              <button className="px-4 py-2 text-sm font-medium text-white cursor-pointer bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-200">
-                Daftar
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+     
+     <Nav /> 
 
       {/* Hero Section dengan Background Image */}
       <section className="relative h-96 flex items-center justify-center">
@@ -151,50 +98,8 @@ export default function DashboardPage() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        
-        {/* Pilih Kabupaten/Kota Section */}
-       {/* Pilih Kabupaten/Kota Section */}
-<section className="mb-16">
-  <div className="text-center mb-8">
-    <h2 className="text-3xl font-bold text-gray-800 mb-2">Pilih Kabupaten/Kota</h2>
-    <p className="text-gray-600">Jelajahi destinasi wisata di berbagai wilayah Sumatera Barat</p>
-  </div>
-
-  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-    {regions.map((region) => (
-      <button
-        key={region.id}
-        className="group relative rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-      >
-        {/* Background Image */}
-        {region.img && (
-          <img
-            src={region.img}
-            alt={region.name}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          />
-        )}
-
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-
-        {/* Content */}
-        <div className="relative z-10 flex flex-col items-center justify-center p-6 text-white">
-          <div
-            className={`w-14 h-14 mb-3 rounded-full bg-gradient-to-br flex items-center justify-center text-2xl shadow-lg`}
-          >
-          </div>
-          <h3 className="text-sm font-semibold text-center">
-            {region.name}
-          </h3>
-        </div>
-      </button>
-    ))}
-  </div>
-</section>
-
-
-        {/* Destinasi Trending Section */}
+        <Region />
+    {/* Destinasi Trending Section */}
         <section className="mb-16">
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-800 mb-2">Destinasi Trending</h2>
