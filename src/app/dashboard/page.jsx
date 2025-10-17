@@ -6,12 +6,12 @@ export default function DashboardPage() {
 
   // Data Kabupaten/Kota
   const regions = [
-    { id: 1, name: "Padang", icon: "🏖️", color: "from-blue-400 to-blue-600" },
-    { id: 2, name: "Bukittinggi", icon: "🏔️", color: "from-green-400 to-green-600" },
-    { id: 3, name: "Tanah Datar", icon: "🏛️", color: "from-purple-400 to-purple-600" },
-    { id: 4, name: "Payakumbuh", icon: "🌾", color: "from-yellow-400 to-yellow-600" },
-    { id: 5, name: "Solok", icon: "🏞️", color: "from-teal-400 to-teal-600" },
-    { id: 6, name: "Pesisir Selatan", icon: "🌊", color: "from-cyan-400 to-cyan-600" },
+    { id: 1, name: "Padang", icon: "🏖️", img:"/background/padang.png"},
+    { id: 2, name: "Bukittinggi", icon: "🏔️", img:"/background/jamgadang.png"},
+    { id: 3, name: "Tanah Datar", icon: "🏛️",img:"/background/tanahdatar.png" },
+    { id: 4, name: "Payakumbuh", icon: "🌾",img:"/background/payakumbuh.png"},
+    { id: 5, name: "Solok", icon: "🏞️",img:"/background/solok.png"},
+    { id: 6, name: "Pesisir Selatan", icon: "🌊", img:"/background/painan.png"},
   ];
 
   // Data Destinasi Trending
@@ -74,10 +74,11 @@ export default function DashboardPage() {
       {/* Navbar */}
       <nav className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-20">
             {/* Logo */}
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-blue-600">Wisata Sumbar</h1>
+                <img src="/icon/trafellow.png" className="h-16 w-auto" alt="" />
+              <h1 className="text-2xl font-bold text-blue-600">Trafellow</h1>
             </div>
 
             {/* Menu Desktop */}
@@ -86,7 +87,7 @@ export default function DashboardPage() {
                 <button
                   key={item}
                   onClick={() => setActiveMenu(item.toLowerCase())}
-                  className={`text-sm font-medium transition-colors duration-200 ${
+                  className={`text-md font-medium transition-colors duration-200 ${
                     activeMenu === item.toLowerCase()
                       ? "text-blue-600 border-b-2 border-blue-600"
                       : "text-gray-600 hover:text-blue-600"
@@ -141,28 +142,46 @@ export default function DashboardPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         
         {/* Pilih Kabupaten/Kota Section */}
-        <section className="mb-16">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">Pilih Kabupaten/Kota</h2>
-            <p className="text-gray-600">Jelajahi destinasi wisata di berbagai wilayah Sumatera Barat</p>
-          </div>
+       {/* Pilih Kabupaten/Kota Section */}
+<section className="mb-16">
+  <div className="text-center mb-8">
+    <h2 className="text-3xl font-bold text-gray-800 mb-2">Pilih Kabupaten/Kota</h2>
+    <p className="text-gray-600">Jelajahi destinasi wisata di berbagai wilayah Sumatera Barat</p>
+  </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {regions.map((region) => (
-              <button
-                key={region.id}
-                className="group bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-              >
-                <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br ${region.color} flex items-center justify-center text-3xl transform group-hover:scale-110 transition-transform duration-300`}>
-                  {region.icon}
-                </div>
-                <h3 className="text-sm font-semibold text-gray-800 text-center group-hover:text-blue-600 transition-colors duration-200">
-                  {region.name}
-                </h3>
-              </button>
-            ))}
+  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+    {regions.map((region) => (
+      <button
+        key={region.id}
+        className="group relative rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+      >
+        {/* Background Image */}
+        {region.img && (
+          <img
+            src={region.img}
+            alt={region.name}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+        )}
+
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+
+        {/* Content */}
+        <div className="relative z-10 flex flex-col items-center justify-center p-6 text-white">
+          <div
+            className={`w-14 h-14 mb-3 rounded-full bg-gradient-to-br flex items-center justify-center text-2xl shadow-lg`}
+          >
           </div>
-        </section>
+          <h3 className="text-sm font-semibold text-center">
+            {region.name}
+          </h3>
+        </div>
+      </button>
+    ))}
+  </div>
+</section>
+
 
         {/* Destinasi Trending Section */}
         <section className="mb-16">
@@ -272,7 +291,7 @@ export default function DashboardPage() {
       {/* Footer */}
       <footer className="bg-gray-800 text-white mt-16 py-8">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-gray-400">© 2024 Wisata Sumatera Barat. All rights reserved.</p>
+          <p className="text-gray-400">© Technovaria 2025 All rights reserved.</p>
         </div>
       </footer>
     </div>

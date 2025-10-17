@@ -1,9 +1,11 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const router = useRouter()
 
   const handleChange = (e) => {
     setFormData({
@@ -19,6 +21,8 @@ export default function LoginPage() {
     setTimeout(() => {
       setLoading(false);
       alert("Login berhasil! 🎉");
+      router.push("/dashboard")
+
     }, 1000);
   };
 
