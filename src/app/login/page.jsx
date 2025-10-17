@@ -2,19 +2,33 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function LoginPage() {
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [loading, setLoading] = useState(false);
+export default function AuthPage() {
+  const [isFlipped, setIsFlipped] = useState(false);
   const router = useRouter()
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [registerData, setRegisterData] = useState({ 
+    name: "", 
+    email: "", 
+    password: "", 
+    confirmPassword: "" 
+  });
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
+  const handleLoginChange = (e) => {
+    setLoginData({
+      ...loginData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleRegisterChange = (e) => {
+    setRegisterData({
+      ...registerData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleLoginSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -22,16 +36,37 @@ export default function LoginPage() {
       setLoading(false);
       alert("Login berhasil! 🎉");
       router.push("/dashboard")
-
     }, 1000);
+  };
+
+  const handleRegisterSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+      alert("Registrasi berhasil! Silakan login 🎉");
+      // Flip kembali ke login setelah register berhasil
+      setIsFlipped(false);
+      // Reset form register
+      setRegisterData({ name: "", email: "", password: "", confirmPassword: "" });
+    }, 1000);
+  };
+
+  const flipToRegister = () => {
+    setIsFlipped(true);
+  };
+
+  const flipToLogin = () => {
+    setIsFlipped(false);
   };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center p-6 overflow-hidden">
-      {/* Background Image - Ganti dengan /background/login.png */}
+      {/* Background Image */}
       <div className="absolute inset-0 -z-10">
         <img
-          src="/background/login.png"
+          src="/background/login/login.png"
           alt="Rumah Gadang"
           className="w-full h-full object-cover"
         />
@@ -39,141 +74,313 @@ export default function LoginPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-blue-800/20"></div>
       </div>
 
-      {/* Login Card dengan Desain Biru-Putih */}
-      <div className="relative w-full max-w-md">
-        {/* Ornamen Atas - Inspired by Rumah Gadang roof */}
-        <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-32 h-12 bg-gradient-to-b from-blue-600 to-blue-700 rounded-t-[50%] shadow-xl">
+      {/* Flip Card Container */}
+      <div className="relative w-full max-w-md" style={{ perspective: "1000px" }}>
+        {/* Ornamen Atas */}
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-32 h-12 bg-gradient-to-b from-blue-600 to-blue-700 rounded-t-[50%] shadow-xl z-20">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-10 bg-gradient-to-b from-blue-500 to-blue-600 rounded-t-[50%]"></div>
         </div>
 
-        {/* Main Card */}
-        <div className="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl border-2 border-blue-200/50 p-8 relative overflow-hidden">
-          
-          {/* Decorative Corner Patterns - Blue */}
-          <div className="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4 border-blue-500/30 rounded-tl-3xl"></div>
-          <div className="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4 border-blue-500/30 rounded-tr-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4 border-blue-500/30 rounded-bl-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-blue-500/30 rounded-br-3xl"></div>
+        {/* Flip Card */}
+        <div 
+          className="relative w-full transition-transform duration-700 ease-in-out"
+          style={{ 
+            transformStyle: "preserve-3d",
+            transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)"
+          }}
+        >
+          {/* LOGIN CARD - Front */}
+          <div 
+            className="w-full"
+            style={{ 
+              backfaceVisibility: "hidden",
+              transform: "rotateY(0deg)"
+            }}
+          >
+            <div className="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl border-2 border-blue-200/50 p-8 relative overflow-hidden">
+              
+              {/* Decorative Corner Patterns */}
+              <div className="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4 border-blue-500/30 rounded-tl-3xl"></div>
+              <div className="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4 border-blue-500/30 rounded-tr-3xl"></div>
+              <div className="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4 border-blue-500/30 rounded-bl-3xl"></div>
+              <div className="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-blue-500/30 rounded-br-3xl"></div>
 
-          {/* Background Pattern Subtle */}
-          <div className="absolute inset-0 opacity-5">
-            <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern id="blue-pattern" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
-                  <circle cx="40" cy="40" r="2" fill="#3B82F6"/>
-                  <circle cx="0" cy="0" r="2" fill="#3B82F6"/>
-                  <circle cx="80" cy="80" r="2" fill="#3B82F6"/>
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#blue-pattern)"/>
-            </svg>
-          </div>
-
-          {/* Title */}
-          <div className="text-center mb-8 relative z-10">
-            <div className="inline-block">
-              <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-blue-700 mb-2">
-                Welcome To Trafellow
-              </h2>
-              <div className="h-1 w-32 mx-auto bg-gradient-to-r from-transparent via-blue-500 to-transparent rounded-full"></div>
-            </div>
-            <p className="text-gray-600 text-sm mt-3 font-medium">Platform Wisata Sumatera Barat</p>
-          </div>
-
-          <div className="space-y-5 relative z-10">
-            {/* Email Input */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                placeholder="nama@email.com"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full bg-blue-50/50 border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 text-gray-800 placeholder:text-gray-400"
-                required
-              />
-            </div>
-
-            {/* Password Input */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Password
-              </label>
-              <input
-                type="password"
-                name="password"
-                placeholder="••••••••"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full bg-blue-50/50 border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 text-gray-800"
-                required
-              />
-            </div>
-
-            {/* Forgot Password */}
-            <div className="text-right">
-              <a
-                href="#"
-                className="text-sm text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors duration-200"
-              >
-                Forgot password?
-              </a>
-            </div>
-
-            {/* Login Button */}
-            <button
-              onClick={handleSubmit}
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:from-blue-600 hover:via-blue-700 hover:to-blue-800 text-white font-bold rounded-xl py-3 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/50 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Logging in...
-                </span>
-              ) : (
-                "Login"
-              )}
-            </button>
-          </div>
-
-          {/* Register Link */}
-          <div className="mt-6 text-center relative z-10">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200"></div>
+              {/* Background Pattern */}
+              <div className="absolute inset-0 opacity-5">
+                <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <pattern id="blue-pattern" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+                      <circle cx="40" cy="40" r="2" fill="#3B82F6"/>
+                      <circle cx="0" cy="0" r="2" fill="#3B82F6"/>
+                      <circle cx="80" cy="80" r="2" fill="#3B82F6"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#blue-pattern)"/>
+                </svg>
               </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-gray-500 font-medium">atau</span>
+
+              {/* Title */}
+              <div className="text-center mb-8 relative z-10">
+                <div className="inline-block">
+                  <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-blue-700 mb-2">
+                    Welcome To Trafellow
+                  </h2>
+                  <div className="h-1 w-32 mx-auto bg-gradient-to-r from-transparent via-blue-500 to-transparent rounded-full"></div>
+                </div>
+                <p className="text-gray-600 text-sm mt-3 font-medium">Platform Wisata Sumatera Barat</p>
+              </div>
+
+              <form onSubmit={handleLoginSubmit} className="space-y-5 relative z-10">
+                {/* Email Input */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="nama@email.com"
+                    value={loginData.email}
+                    onChange={handleLoginChange}
+                    className="w-full bg-blue-50/50 border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 text-gray-800 placeholder:text-gray-400"
+                    required
+                  />
+                </div>
+
+                {/* Password Input */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="••••••••"
+                    value={loginData.password}
+                    onChange={handleLoginChange}
+                    className="w-full bg-blue-50/50 border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 text-gray-800"
+                    required
+                  />
+                </div>
+
+                {/* Forgot Password */}
+                <div className="text-right">
+                  <a
+                    href="#"
+                    className="text-sm text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors duration-200"
+                  >
+                    Forgot password?
+                  </a>
+                </div>
+                <div className="flex justify-center flex-col text-black space-y-2">
+                <p className="text-center">Berapa hasil penjumlahan dari 8 + 9</p>
+                <input className="border border-1 text-center h-9 outline-none rounded-md" type="text" />
+                </div>
+
+                {/* Login Button */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:from-blue-600 hover:via-blue-700 hover:to-blue-800 text-white font-bold rounded-xl py-3 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/50 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Logging in...
+                    </span>
+                  ) : (
+                    "Login"
+                  )}
+                </button>
+              </form>
+
+              {/* Register Link */}
+              <div className="mt-6 text-center relative z-10">
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-200"></div>
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-4 bg-white text-gray-500 font-medium">atau</span>
+                  </div>
+                </div>
+                <p className="text-gray-600 mt-4">
+                  Don't have an account?{" "}
+                  <button
+                    type="button"
+                    onClick={flipToRegister}
+                    className="text-blue-600 font-bold hover:text-blue-700 hover:underline transition-colors duration-200"
+                  >
+                    Register
+                  </button>
+                </p>
               </div>
             </div>
-            <p className="text-gray-600 mt-4">
-              Don't have an account?{" "}
-              <a
-                href="/register"
-                className="text-blue-600 font-bold hover:text-blue-700 hover:underline transition-colors duration-200"
-              >
-                Register
-              </a>
-            </p>
+          </div>
+
+          {/* REGISTER CARD - Back */}
+          <div 
+            className="absolute top-0 left-0 w-full"
+            style={{ 
+              backfaceVisibility: "hidden",
+              transform: "rotateY(180deg)"
+            }}
+          >
+            <div className="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl border-2 border-blue-200/50 p-8 relative overflow-hidden">
+              
+              {/* Decorative Corner Patterns */}
+              <div className="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4 border-blue-500/30 rounded-tl-3xl"></div>
+              <div className="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4 border-blue-500/30 rounded-tr-3xl"></div>
+              <div className="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4 border-blue-500/30 rounded-bl-3xl"></div>
+              <div className="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-blue-500/30 rounded-br-3xl"></div>
+
+              {/* Background Pattern */}
+              <div className="absolute inset-0 opacity-5">
+                <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <pattern id="blue-pattern-register" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+                      <circle cx="40" cy="40" r="2" fill="#3B82F6"/>
+                      <circle cx="0" cy="0" r="2" fill="#3B82F6"/>
+                      <circle cx="80" cy="80" r="2" fill="#3B82F6"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#blue-pattern-register)"/>
+                </svg>
+              </div>
+
+              {/* Title */}
+              <div className="text-center mb-6 relative z-10">
+                <div className="inline-block">
+                  <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-blue-700 mb-2">
+                    Join Trafellow
+                  </h2>
+                  <div className="h-1 w-32 mx-auto bg-gradient-to-r from-transparent via-blue-500 to-transparent rounded-full"></div>
+                </div>
+                <p className="text-gray-600 text-sm mt-3 font-medium">Mulai petualangan Anda di Sumatera Barat</p>
+              </div>
+
+              <form onSubmit={handleRegisterSubmit} className="space-y-4 relative z-10">
+                {/* Name Input */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Nama Lengkap
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="John Doe"
+                    value={registerData.name}
+                    onChange={handleRegisterChange}
+                    className="w-full bg-blue-50/50 border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 text-gray-800 placeholder:text-gray-400"
+                    required
+                  />
+                </div>
+
+                {/* Email Input */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="nama@email.com"
+                    value={registerData.email}
+                    onChange={handleRegisterChange}
+                    className="w-full bg-blue-50/50 border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 text-gray-800 placeholder:text-gray-400"
+                    required
+                  />
+                </div>
+
+                {/* Password Input */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="••••••••"
+                    value={registerData.password}
+                    onChange={handleRegisterChange}
+                    className="w-full bg-blue-50/50 border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 text-gray-800"
+                    required
+                  />
+                </div>
+
+                {/* Confirm Password Input */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Konfirmasi Password
+                  </label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="••••••••"
+                    value={registerData.confirmPassword}
+                    onChange={handleRegisterChange}
+                    className="w-full bg-blue-50/50 border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 text-gray-800"
+                    required
+                  />
+                </div>
+
+                {/* Register Button */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:from-blue-600 hover:via-blue-700 hover:to-blue-800 text-white font-bold rounded-xl py-3 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/50 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Registering...
+                    </span>
+                  ) : (
+                    "Register"
+                  )}
+                </button>
+              </form>
+
+              {/* Login Link */}
+              <div className="mt-6 text-center relative z-10">
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-200"></div>
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-4 bg-white text-gray-500 font-medium">atau</span>
+                  </div>
+                </div>
+                <p className="text-gray-600 mt-4">
+                  Already have an account?{" "}
+                  <button
+                    type="button"
+                    onClick={flipToLogin}
+                    className="text-blue-600 font-bold hover:text-blue-700 hover:underline transition-colors duration-200"
+                  >
+                    Login
+                  </button>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Ornamen Bawah - Blue dots */}
-        <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+        {/* Ornamen Bawah */}
+        <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
           <div className="w-3 h-3 bg-blue-500 rounded-full shadow-lg"></div>
           <div className="w-3 h-3 bg-blue-600 rounded-full shadow-lg"></div>
           <div className="w-3 h-3 bg-blue-700 rounded-full shadow-lg"></div>
         </div>
       </div>
 
-      {/* Subtle decorative elements */}
+      {/* Decorative elements */}
       <div className="absolute top-16 left-16 w-20 h-20 bg-blue-500/10 rounded-full blur-2xl"></div>
       <div className="absolute bottom-20 right-20 w-32 h-32 bg-blue-600/10 rounded-full blur-3xl"></div>
     </div>

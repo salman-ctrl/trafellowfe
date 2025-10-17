@@ -1,18 +1,29 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
   const [activeMenu, setActiveMenu] = useState("beranda");
+  const router = useRouter();
 
   // Data Kabupaten/Kota
   const regions = [
-    { id: 1, name: "Padang", icon: "🏖️", img:"/background/padang.png"},
-    { id: 2, name: "Bukittinggi", icon: "🏔️", img:"/background/jamgadang.png"},
-    { id: 3, name: "Tanah Datar", icon: "🏛️",img:"/background/tanahdatar.png" },
-    { id: 4, name: "Payakumbuh", icon: "🌾",img:"/background/payakumbuh.png"},
-    { id: 5, name: "Solok", icon: "🏞️",img:"/background/solok.png"},
-    { id: 6, name: "Pesisir Selatan", icon: "🌊", img:"/background/painan.png"},
+    { id: 1, name: "Padang", icon: "🏖️", img:"/background/dashboard/padang.png"},
+    { id: 2, name: "Bukittinggi", icon: "🏔️", img:"/background/dashboard/jamgadang.png"},
+    { id: 3, name: "Tanah Datar", icon: "🏛️",img:"/background/dashboard/tanahdatar.png" },
+    { id: 4, name: "Payakumbuh", icon: "🌾",img:"/background/dashboard/payakumbuh.png"},
+    { id: 5, name: "Solok", icon: "🏞️",img:"/background/dashboard/solok.png"},
+    { id: 6, name: "Pesisir Selatan", icon: "🌊", img:"/background/dashboard/painan.png"},
   ];
+
+  const handleclick = (e) => {
+    e.preventDefault();
+
+    setTimeout(() => {
+      router.push("/login")
+
+    }, 1000);
+  };
 
   // Data Destinasi Trending
   const trendingDestinations = [
@@ -22,7 +33,7 @@ export default function DashboardPage() {
       location: "Bukittinggi",
       rating: 4.8,
       reviews: 234,
-      image:"/background/jamgadang.png",
+      image:"/background/dashboard/jamgadang.png",
       badge: "Bukittinggi"
     },
     {
@@ -31,7 +42,7 @@ export default function DashboardPage() {
       location: "Pesisir Selatan",
       rating: 4.7,
       reviews: 189,
-      image: "/background/painan.png",
+      image: "/background/dashboard/painan.png",
       badge: "Pesisir Selatan"
     },
     {
@@ -40,7 +51,7 @@ export default function DashboardPage() {
       location: "Bukittinggi",
       rating: 4.9,
       reviews: 312,
-      image: "/background/ngaraisianok.png",
+      image: "/background/dashboard/ngaraisianok.png",
       badge: "Bukittinggi"
     },
   ];
@@ -100,10 +111,10 @@ export default function DashboardPage() {
 
             {/* Action Buttons */}
             <div className="flex items-center space-x-3">
-              <button className="px-4 py-2 text-sm font-medium text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
+              <button onClick={handleclick} className="px-4 py-2 text-sm cursor-pointer font-medium text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors duration-200">
                 Masuk
               </button>
-              <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+              <button className="px-4 py-2 text-sm font-medium text-white cursor-pointer bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-200">
                 Daftar
               </button>
             </div>
@@ -116,7 +127,7 @@ export default function DashboardPage() {
         {/* Background Image */}
         <div className="absolute inset-0 z-10">
           <img
-            src="/background/hero.png"
+            src="/background/dashboard/hero.png"
             alt="Hero Background"
             className="w-full h-full object-cover"
           />
